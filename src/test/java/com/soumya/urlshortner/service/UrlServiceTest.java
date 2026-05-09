@@ -27,7 +27,7 @@ public class UrlServiceTest {
         when(urlRepository.save(any(Url.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        String shortCode = urlService.createShortUrl(longUrl);
+        String shortCode = urlService.createShortUrl(longUrl,null,null);
 
         assertNotNull(shortCode);
         assertEquals(6, shortCode.length());

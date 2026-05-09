@@ -2,7 +2,6 @@ package com.soumya.urlshortner.controller;
 
 import com.soumya.urlshortner.dto.ShortenUrlRequest;
 import com.soumya.urlshortner.dto.ShortenUrlResponse;
-import com.soumya.urlshortner.entity.Url;
 import com.soumya.urlshortner.service.UrlService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,11 @@ public class UrlController {
     private UrlService urlService;
     @PostMapping("/shorten")
     public ShortenUrlResponse shorten(@Valid @RequestBody ShortenUrlRequest request){
-        String shortCode = urlService.createShortUrl(request.getUrl());
+        String shortCode = urlService.createShortUrl(
+                request.getUrl(),
+                request.getExpiryMinutes(),
+                request.getCustomCode()
+        );
         String shortUrl = "http://localhost:8080/"+shortCode;
         
         return new ShortenUrlResponse(shortUrl);
