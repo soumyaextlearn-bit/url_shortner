@@ -17,9 +17,6 @@ import java.util.UUID;
 public class UrlService {
     @Autowired
     private UrlRepository urlRepository;
-    private String generateShortCode(){
-        return UUID.randomUUID().toString().substring(0,6);
-    }
 
     @Value("${app.url.default-expiry-minutes:43200}")
     private long defaultExpiryMinutes;
