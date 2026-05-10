@@ -8,7 +8,6 @@ import com.soumya.urlshortner.repository.UrlRepository;
 import com.soumya.urlshortner.utill.Base62Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 

@@ -2,10 +2,9 @@ package com.soumya.urlshortner.service;
 
 import com.soumya.urlshortner.exception.RateLimitExceededException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
 
 import java.time.Duration;
 
@@ -31,7 +30,11 @@ public class RateLimiterService {
             if(requestCount != null && requestCount > MAX_REQUESTS){
                 throw new RateLimitExceededException("Rate limit exceeded");
             }
-        }catch (RedisConnectionFailureException ex){
+        }
+        catch (RateLimitExceededException ex){
+            throw ex;
+        }
+        catch (Exception ex){
             System.out.println("Redis is unavailable, Skipping rate limiting");
         }
 
