@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="URL Shortener API Suite">
+
+    <test name="Sanity Tests">
+
+        <classes>
+
+            <class name="com.soumya.urlshortner.tests.ShortenUrlApiTest"/>
+
+            <class name="com.soumya.urlshortner.tests.RateLimitApiTest"/>
+
+        </classes>
+
+    </test>
+
+</suite>
