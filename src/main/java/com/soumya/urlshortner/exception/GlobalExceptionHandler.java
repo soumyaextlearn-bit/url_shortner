@@ -43,5 +43,12 @@ public class GlobalExceptionHandler {
         errors.put("error",ex.getMessage());
         return errors;
     }
+    @ExceptionHandler(RateLimitExceededException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public Map<String,String> handleRateLimitException(RateLimitExceededException ex){
+        Map<String,String> errors = new HashMap<>();
+        errors.put("error",ex.getMessage());
+        return errors;
+    }
 
 }
