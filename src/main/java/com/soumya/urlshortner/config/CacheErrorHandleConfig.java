@@ -1,5 +1,6 @@
 package com.soumya.urlshortner.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.cache.Cache;
 import org.springframework.cache.interceptor.CacheErrorHandler;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Slf4j
 public class CacheErrorHandleConfig {
     @Bean
     public CacheErrorHandler cacheErrorHandler() {
@@ -15,7 +17,7 @@ public class CacheErrorHandleConfig {
             public void handleCacheGetError(RuntimeException exception,
                                             Cache cache,
                                             Object key) {
-                System.out.println("cache Get Error : " + exception.getMessage());
+                log.error(exception.getMessage(), exception);
             }
 
             @Override
@@ -23,20 +25,20 @@ public class CacheErrorHandleConfig {
                                             Cache cache,
                                             Object key,
                                             @Nullable Object value) {
-                System.out.println("cache Put Error : " + exception.getMessage());
+                log.error(exception.getMessage(), exception);
             }
 
             @Override
             public void handleCacheEvictError(RuntimeException exception,
                                               Cache cache,
                                               Object key) {
-                System.out.println("cache Evict Error : " + exception.getMessage());
+                log.error(exception.getMessage(), exception);
             }
 
             @Override
             public void handleCacheClearError(RuntimeException exception,
                                               Cache cache) {
-                System.out.println("cache Clear Error : " + exception.getMessage());
+                log.error(exception.getMessage(), exception);
             }
 
         };

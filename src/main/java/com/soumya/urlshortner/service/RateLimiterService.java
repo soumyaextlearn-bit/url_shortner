@@ -2,6 +2,7 @@ package com.soumya.urlshortner.service;
 
 import com.soumya.urlshortner.exception.RateLimitExceededException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RateLimiterService {
 
     private static final int MAX_REQUESTS = 5;
@@ -35,7 +37,7 @@ public class RateLimiterService {
             throw ex;
         }
         catch (Exception ex){
-            System.out.println("Redis is unavailable, Skipping rate limiting");
+            log.error("Redis is unavailable, Skipping rate limiting");
         }
 
     }
