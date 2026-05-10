@@ -8,15 +8,21 @@ import com.soumya.urlshortner.repository.UrlRepository;
 import com.soumya.urlshortner.utill.Base62Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 @Service
 public class UrlService {
     @Autowired
     private UrlRepository urlRepository;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Value("${app.url.default-expiry-minutes:43200}")
     private long defaultExpiryMinutes;
@@ -47,7 +53,19 @@ public class UrlService {
         return shortcode;
     }
 
+
     public String getOriginalUrl(String shortCode){
+        try{
+            String cachedUrl = redisTemplate.opsForValue().get(shortCode);
+            if(cachedUrl != null){
+                System.out.println("Fetched from redis");
+                return cachedUrl;
+            }
+        }catch (Exception e){
+            System.out.println("Redis is unavailable, Falling back to DB");
+        }
+
+        System.out.println("Fetching from DB");
         Url url = urlRepository.findByShortCode(shortCode)
                 .orElseThrow(() -> new UrlNotFoundException("Short URL not found") );
 
@@ -56,6 +74,16 @@ public class UrlService {
         }
         url.setClickCount(url.getClickCount()+1);
         urlRepository.save(url);
+
+        try{
+            redisTemplate.opsForValue().set(
+                    shortCode,
+                    url.getLongUrl(),
+                    Duration.ofMinutes(10)
+            );
+        }catch (Exception e){
+            System.out.println("Redis is unavailable, Failed to cache in redis");
+        }
         return url.getLongUrl();
     }
 }
