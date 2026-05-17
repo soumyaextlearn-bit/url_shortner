@@ -31,9 +31,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-  app:
+  backend:
 
-    build: .
+    build: ./backend
 
     container_name: urlshortner-app
 
@@ -51,5 +51,19 @@ services:
 
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
+  frontend:
+
+    build: ./frontend/urlshortner_UI
+
+    container_name: urlshortner_frontend
+
+    ports:
+      - "5173:5173"
+
+    environment:
+      - VITE_API_BASE_URL= http://backend:8080
+
+    depends_on:
+      - backend
 volumes:
   mysql_data:
