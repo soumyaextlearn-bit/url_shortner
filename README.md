@@ -59,7 +59,7 @@ A production-style URL Shortener backend application built using Spring Boot, Re
 # Frontend
 
 | Technology |
-|---|---|
+|---|
 | REACT |
 | Vite | 
 | Tailwind CSS |
