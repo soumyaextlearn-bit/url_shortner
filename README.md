@@ -56,6 +56,17 @@ A production-style URL Shortener backend application built using Spring Boot, Re
 
 ---
 
+# Frontend
+
+| Technology | Usage |
+|---|---|
+| REACT |
+| Vite | 
+| Tailwind CSS |
+| Axios |
+
+---
+
 # Architecture
 
 ```text
